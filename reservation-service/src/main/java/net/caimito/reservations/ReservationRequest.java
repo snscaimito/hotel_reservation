@@ -2,12 +2,19 @@ package net.caimito.reservations;
 
 import java.time.LocalDate;
 
-public class ReservationRequest {
+import org.springframework.hateoas.ResourceSupport;
+
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+public class ReservationRequest extends ResourceSupport {
 
 	private LocalDate startDate;
 	private LocalDate endDate;
 
-	private ReservationRequest(LocalDate startDate, LocalDate endDate) {
+	@JsonCreator
+	public ReservationRequest(@JsonProperty("requestStartDate") LocalDate startDate, 
+			@JsonProperty("requestEndDate") LocalDate endDate) {
 		this.startDate = startDate ;
 		this.endDate = endDate ;
 	}
