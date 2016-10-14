@@ -6,9 +6,9 @@ When(/^I request a reservation from "([^"]*)" to "([^"]*)"$/) do |from_date, to_
   end
 end
 
-Then(/^it is confirmed$/) do
+Then(/^it is not confirmed$/) do
   on ReservationPage do |page|
-    expect(page.startDate).not_to be_nil
-    expect(page.endDate).not_to be_nil
+    expect(page.startDate).to be_nil
+    expect(page.endDate).to be_nil
   end
 end

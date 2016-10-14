@@ -1,30 +1,28 @@
 package net.caimito.reservations;
 
-import java.util.HashMap;
-import java.util.UUID;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
-public class ReservationController {
-	private HashMap<UUID, Reservation> reservations = new HashMap<>() ;
+import java.time.LocalDate;
 
-	public Reservation create(ReservationRequest request) {
-		Reservation reservation = new Reservation(request.getStartDate(), request.getEndDate()) ;
-		reservation.setId(UUID.randomUUID()) ;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class WebController {
+
+	@RequestMapping("/reservation")
+	public HttpEntity<ReservationRequest> reserve(
+			@RequestParam(value="requestStartDate", required=false, defaultValue="1900-01-01") String requestStartDate,
+			@RequestParam(value="requestEndDate", required=false, defaultValue="1900-01-01") String requestEndDate
+			) {
+		ReservationRequest reservationRequest = new ReservationRequest(LocalDate.parse(requestStartDate), LocalDate.parse(requestEndDate)) ;
+		reservationRequest.add(linkTo(methodOn(WebController.class).reserve(requestStartDate, requestEndDate)).withSelfRel());
 		
-		reservations.put(reservation.getId(), reservation) ;
-		
-		return reservation ;
+		return new ResponseEntity<ReservationRequest>(reservationRequest, HttpStatus.OK) ;
 	}
-
-	public int hasReservations() {
-		return reservations.size() ;
-	}
-
-	public Reservation findByToken(UUID id) {
-		return reservations.get(id);
-	}
-
-	public void cancel(UUID id) {
-		reservations.remove(id) ;
-	}
-
 }
