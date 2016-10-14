@@ -1,49 +1,45 @@
 package net.caimito.reservations;
 
-import static org.junit.Assert.* ;
-
-import java.time.LocalDate;
-
-import static org.hamcrest.Matchers.* ;
-
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.web.context.WebApplicationContext;
 
-import net.caimito.reservations.ReservationController;
+import static org.hamcrest.Matchers.is;
 
+import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
+@RunWith(SpringJUnit4ClassRunner.class)
+@SpringApplicationConfiguration(classes = Main.class)
+@WebAppConfiguration
 public class ReservationTest {
 
-	protected ReservationController controller = null ;
+	private MockMvc mockMvc;
+	
+	@Autowired
+    private WebApplicationContext webApplicationContext;
 	
 	@Before
-	public void setup() {
-		controller = new ReservationController() ;
-	}
+    public void setup() throws Exception {
+        this.mockMvc = webAppContextSetup(webApplicationContext).build();
+    }
 	
 	@Test
-	public void createNewReservation() {
-		controller.create(createRequest("2016-10-01", "2016-10-05")) ;
-		assertThat(controller.hasReservations(), is(1)) ;
-	}
-
-	@Test
-	public void cancelReservation() {
-		final Reservation reservationCreated = controller.create(createRequest("2016-10-01", "2016-10-05")) ;
-		
-		controller.cancel(reservationCreated.getId()) ;
-		assertThat(controller.hasReservations(), is(0)) ;
-	}
-
-	@Test
-	public void findReservationByToken() {
-		final Reservation reservationCreated = controller.create(createRequest("2016-10-01", "2016-10-05")) ;
-
-		Reservation reservationActual = controller.findByToken(reservationCreated.getId()) ;
-		assertThat(reservationActual, is(reservationCreated)) ;
-	}
-
-	protected ReservationRequest createRequest(String startDate, String endDate) {
-		return ReservationRequest.createRequest(LocalDate.parse(startDate), LocalDate.parse(endDate));
+	public void requestReservation() throws Exception {
+		mockMvc.perform(get("/reservation"))
+			.andExpect(status().isOk())
+			.andExpect(jsonPath("$.startDate", is("1900-01-01")))
+			.andExpect(jsonPath("$.endDate", is("1900-01-01"))) ;
+	
+//		controller.request("2016-10-01", "2016-10-05") ;
+//		assertThat(controller.hasReservations(), is(1)) ;
 	}
 
 }

@@ -13,15 +13,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class WebController {
+public class ReservationController {
 
 	@RequestMapping("/reservation")
-	public HttpEntity<ReservationRequest> reserve(
+	public HttpEntity<ReservationRequest> request(
 			@RequestParam(value="requestStartDate", required=false, defaultValue="1900-01-01") String requestStartDate,
 			@RequestParam(value="requestEndDate", required=false, defaultValue="1900-01-01") String requestEndDate
 			) {
 		ReservationRequest reservationRequest = new ReservationRequest(LocalDate.parse(requestStartDate), LocalDate.parse(requestEndDate)) ;
-		reservationRequest.add(linkTo(methodOn(WebController.class).reserve(requestStartDate, requestEndDate)).withSelfRel());
+		reservationRequest.add(linkTo(methodOn(ReservationController.class).request(requestStartDate, requestEndDate)).withSelfRel());
 		
 		return new ResponseEntity<ReservationRequest>(reservationRequest, HttpStatus.OK) ;
 	}
