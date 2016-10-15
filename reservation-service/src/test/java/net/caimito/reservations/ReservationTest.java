@@ -1,45 +1,63 @@
 package net.caimito.reservations;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.SpringApplicationConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.web.context.WebApplicationContext;
-
+import static org.hamcrest.Matchers.empty;
+import static org.hamcrest.Matchers.emptyCollectionOf;
+import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.not;
+import static org.hamcrest.core.IsNull.* ;
+import static org.junit.Assert.assertThat;
 
-import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import java.time.LocalDate;
+import java.util.List;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = Main.class)
-@WebAppConfiguration
-public class ReservationTest {
+import org.junit.Test;
 
-	private MockMvc mockMvc;
-	
-	@Autowired
-    private WebApplicationContext webApplicationContext;
-	
-	@Before
-    public void setup() throws Exception {
-        this.mockMvc = webAppContextSetup(webApplicationContext).build();
-    }
+public abstract class ReservationTest {
+
+	protected FrontDeskStrategyBuilder strategyBuilder ;
 	
 	@Test
-	public void requestReservation() throws Exception {
-		mockMvc.perform(get("/reservation"))
-			.andExpect(status().isOk())
-			.andExpect(jsonPath("$.startDate", is("1900-01-01")))
-			.andExpect(jsonPath("$.endDate", is("1900-01-01"))) ;
-	
-//		controller.request("2016-10-01", "2016-10-05") ;
-//		assertThat(controller.hasReservations(), is(1)) ;
-	}
+	public void requestRoomWithoutRoomsAvailable() {
+		FrontDesk frontDesk = new FrontDesk(strategyBuilder
+				.addRoom(new Room("Room 100"))
+				.makeReserved("Room 100", LocalDate.parse("2016-10-10"), LocalDate.parse("2016-10-20"))
+				.build()) ;
 
+		ReservationRequest request = new ReservationRequest(LocalDate.parse("2016-10-12"), LocalDate.parse("2016-10-18")) ;
+		List<Room> roomsAvailable = frontDesk.requestRoom(request) ;
+		assertThat(roomsAvailable, is(emptyCollectionOf(Room.class))) ;
+	}
+	
+	@Test
+	public void requestRoomNothingBlocked() {
+		FrontDesk frontDesk = new FrontDesk(strategyBuilder
+				.addRoom(new Room("Room 100"))
+				.build()) ;
+
+		ReservationRequest request = new ReservationRequest(LocalDate.parse("2016-10-12"), LocalDate.parse("2016-10-18")) ;
+		List<Room> roomsAvailable = frontDesk.requestRoom(request) ;
+		assertThat(roomsAvailable, is(hasSize(1))) ;
+	}
+	
+	@Test
+	public void reserveAvailableRoom() {
+		FrontDesk frontDesk = new FrontDesk(strategyBuilder
+				.addRoom(new Room("Room 100"))
+				.build()) ;
+
+		ReservationRequest request = new ReservationRequest(LocalDate.parse("2016-10-12"), LocalDate.parse("2016-10-18")) ;
+		List<Room> roomsAvailable = frontDesk.requestRoom(request) ;
+		assertThat("No list of rooms returned", roomsAvailable, is(notNullValue())) ;
+		assertThat("Did not return at least one room", roomsAvailable, is(not(empty()))) ;
+		
+		Room roomToBeReserved = roomsAvailable.get(0) ;
+		frontDesk.reserve(roomToBeReserved, LocalDate.parse("2016-10-12"), LocalDate.parse("2016-10-18")) ;
+
+		// only one room exists. if it is not available anymore, the reservation above has blocked it
+		assertThat("Room has not been reserved", 
+				frontDesk.requestRoom(new ReservationRequest(LocalDate.parse("2016-10-12"), LocalDate.parse("2016-10-18"))), 
+				is(emptyCollectionOf(Room.class))) ;
+	}
+	
 }

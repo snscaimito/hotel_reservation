@@ -23,8 +23,4 @@ public class FrontDesk {
 		frontDeskStrategy.reserve(room, startDate, endDate) ;
 	}
 
-	public boolean isReserved(Room room) {
-		return frontDeskStrategy.isReserved(room);
-	}
-
 }
