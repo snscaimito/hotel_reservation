@@ -6,24 +6,25 @@ import java.util.List;
 
 public class FrontDesk {
 
-	private AvailabilityStrategy availabilityStrategy;
+	private FrontDeskStrategy frontDeskStrategy;
 
-	public FrontDesk(AvailabilityStrategy availabilityStrategy) {
-		this.availabilityStrategy = availabilityStrategy ;
+	public FrontDesk(FrontDeskStrategy frontDeskStrategy) {
+		this.frontDeskStrategy = frontDeskStrategy ;
 	}
 	
 	public List<Room> requestRoom(ReservationRequest request) {
-		if (availabilityStrategy == null)
+		if (frontDeskStrategy == null)
 			return new ArrayList<>() ;
 		
-		return availabilityStrategy.requestRoom(request.getStartDate(), request.getEndDate()) ;
+		return frontDeskStrategy.requestRoom(request.getStartDate(), request.getEndDate()) ;
 	}
 
 	public void reserve(Room room, LocalDate startDate, LocalDate endDate) {
+		frontDeskStrategy.reserve(room, startDate, endDate) ;
 	}
 
-	public boolean isReserved(Room roomToBeReserved) {
-		return false;
+	public boolean isReserved(Room room) {
+		return frontDeskStrategy.isReserved(room);
 	}
 
 }

@@ -22,7 +22,7 @@ public class ReservationModelTest {
 	
 	@Test
 	public void requestRoomWithMatchingDates() {
-		AvailabilityStrategy availabilityStrategy = new TestAvailabilityStrategyBuilder()
+		FrontDeskStrategy availabilityStrategy = new TestAvailabilityStrategyBuilder()
 				.setAvailable(LocalDate.parse("2016-10-01"), LocalDate.parse("2016-11-01"))
 				.build();
 		FrontDesk frontDesk = new FrontDesk(availabilityStrategy) ;
@@ -34,7 +34,7 @@ public class ReservationModelTest {
 	
 	@Test
 	public void requestRoomOutsideAvailableDates() {
-		AvailabilityStrategy availabilityStrategy = new TestAvailabilityStrategyBuilder()
+		FrontDeskStrategy availabilityStrategy = new TestAvailabilityStrategyBuilder()
 				.setAvailable(LocalDate.parse("2016-09-01"), LocalDate.parse("2016-09-20"))
 				.build();
 		FrontDesk frontDesk = new FrontDesk(availabilityStrategy) ;
@@ -46,8 +46,8 @@ public class ReservationModelTest {
 	
 	@Test
 	public void reserveAvailableRoom() {
-		AvailabilityStrategy availabilityStrategy = new TestAvailabilityStrategyBuilder()
-				.setAvailable(LocalDate.parse("2016-10-01"), LocalDate.parse("2016-11-01"))
+		FrontDeskStrategy availabilityStrategy = new TestAvailabilityStrategyBuilder()
+				.setAvailable(LocalDate.parse("2016-01-01"), LocalDate.parse("2016-12-31"))
 				.build();
 		FrontDesk frontDesk = new FrontDesk(availabilityStrategy) ;
 
@@ -59,4 +59,5 @@ public class ReservationModelTest {
 		frontDesk.reserve(roomToBeReserved, LocalDate.parse("2016-10-12"), LocalDate.parse("2016-10-18")) ;
 		assertThat("Room has not been reserved", frontDesk.isReserved(roomToBeReserved), is(true)) ;
 	}
+	
 }

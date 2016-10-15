@@ -13,8 +13,8 @@ public class TestAvailabilityStrategyBuilder {
 		return this;
 	}
 	
-	public AvailabilityStrategy build() {
-		return new TestAvailabilityStrategy(availableFromDate, availableToDate) ;
+	public FrontDeskStrategy build() {
+		return new FakeFrontDeskStrategy(availableFromDate, availableToDate) ;
 	}
 
 }
