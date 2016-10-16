@@ -8,9 +8,9 @@
 	<description>Hotel Reservations</description>
 
 	<parent>
-		<groupId>org.springframework.boot</groupId>
-		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>1.4.1.RELEASE</version>
+  	  <groupId>net.caimito.hotel</groupId>
+  	  <artifactId>hotel-parent</artifactId>
+  	  <version>0.0.1-SNAPSHOT</version>
 	</parent>
 
 	<dependencies>

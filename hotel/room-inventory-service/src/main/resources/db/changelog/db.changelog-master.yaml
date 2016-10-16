@@ -1,0 +1,31 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: sns
+      changes:
+        - createTable:
+            tableName: rooms
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: designator
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: blockedFromDate
+                  type: date
+                  constraints:
+                    nullable: true
+              - column:
+                  name: blockedToDate
+                  type: date
+                  constraints:
+                    nullable: true
+  
