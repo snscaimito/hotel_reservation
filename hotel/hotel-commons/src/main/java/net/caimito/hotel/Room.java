@@ -1,6 +1,7 @@
-package net.caimito.reservations;
+package net.caimito.hotel;
 
 import java.time.LocalDate;
+
 
 public class Room {
 	private String roomDesignator = "DEFAULT_NOT_FOR_PRODUCTION" ;

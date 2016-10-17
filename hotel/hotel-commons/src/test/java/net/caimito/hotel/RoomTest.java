@@ -1,4 +1,4 @@
-package net.caimito.reservations;
+package net.caimito.hotel;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
@@ -6,6 +6,8 @@ import static org.junit.Assert.assertThat;
 import java.time.LocalDate;
 
 import org.junit.Test;
+
+import net.caimito.hotel.Room;
 
 public class RoomTest {
 

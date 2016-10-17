@@ -1,22 +1,21 @@
-package net.caimito.reservations;
+package net.caimito.hotel.inventory;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
-// TODO turn it into a RESTful service
+import net.caimito.hotel.Room;
 
-@Component
-public class RoomInventoryService {
+@Repository
+public class RoomRepository {
 
 	@Autowired
 	private JdbcTemplate jdbcTemplate ;

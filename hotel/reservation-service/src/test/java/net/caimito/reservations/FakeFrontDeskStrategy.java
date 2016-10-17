@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import net.caimito.hotel.Room;
+
 public class FakeFrontDeskStrategy implements FrontDeskStrategy {
 	private Map<String, Room> rooms ;
 

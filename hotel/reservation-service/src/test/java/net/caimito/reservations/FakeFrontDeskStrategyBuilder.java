@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 
+import net.caimito.hotel.Room;
+
 public class FakeFrontDeskStrategyBuilder implements FrontDeskStrategyBuilder {
 	private Map<String, Room> rooms = new HashMap<>();
 
