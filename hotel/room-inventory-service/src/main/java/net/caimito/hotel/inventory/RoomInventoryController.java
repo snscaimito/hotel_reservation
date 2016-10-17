@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import net.caimito.hotel.HotelServiceUrls;
 import net.caimito.hotel.Room;
 
 @Controller
@@ -23,7 +24,7 @@ public class RoomInventoryController {
 	@Autowired
 	private RoomRepository roomRepository ;
 	
-	@RequestMapping(path = "/rooms/findAvailableRooms", method=RequestMethod.GET)
+	@RequestMapping(path = HotelServiceUrls.ROOM_INVENTORY_FIND_AVAILABLE_ROOMS, method=RequestMethod.GET)
 	public @ResponseBody ResponseEntity<Rooms> findAvailableRooms(
 			@RequestParam(value="requestStartDate", required=false, defaultValue="1900-01-01") String requestStartDate,
 			@RequestParam(value="requestEndDate", required=false, defaultValue="1900-01-01") String requestEndDate
