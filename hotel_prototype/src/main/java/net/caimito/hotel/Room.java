@@ -14,7 +14,7 @@ public class Room {
 		return ToStringBuilder.reflectionToString(this) ;
 	}
 
-	public Object getDesignator() {
+	public String getDesignator() {
 		return designator;
 	}
 

@@ -8,7 +8,7 @@ public class ServiceResponse<T> {
 	public static final int NOT_FOUND = 404;
 	
 	private int _status;
-	private ServiceResponseBody<T> _body;
+	private ServiceResponseBody<T> _body = new ServiceResponseBody<>();
 
 	public int status() {
 		return _status ;
