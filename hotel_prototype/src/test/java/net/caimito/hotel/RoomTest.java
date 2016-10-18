@@ -21,7 +21,9 @@ public class RoomTest {
 		RoomService roomService = new RoomService(roomRepository);
 		ServiceResponse<Room> response = roomService.post("/room", new Room("100")) ;
 		assertThat(response.status(), is(ServiceResponse.OK));
-		assertThat(response.body().uri(), is(String.format("%s/100", RoomService.BASE_URL))) ;
+		assertThat(response.body().uri(), is("/room/100")) ;
+		
+		// TODO check for links to actions
 	}
 
 	@Test
@@ -34,24 +36,42 @@ public class RoomTest {
 	@Test
 	public void getExistingRoom() {
 		RoomService roomService = new RoomService(roomRepository);
-		ServiceResponse<Room> response = roomService.post("/room", new Room("100")) ;
+		roomService.post("/room", new Room("100")) ;
 
-		response = roomService.get("/room/100");
+		ServiceResponse<Room> response = roomService.get("/room/100");
 		assertThat(response.status(), is(ServiceResponse.OK));
-		assertThat(response.body().uri(), is(String.format("%s/100", RoomService.BASE_URL))) ;
+		assertThat(response.body().uri(), is("/room/100")) ;
 		assertThat(response.body().content(), isA(Room.class)) ;
 		assertThat(response.body().content().getDesignator(), is("100")) ;
+		
+		// TODO check for links to actions
+	}
+	
+	@Test
+	public void blockRoom() {
+		RoomService roomService = new RoomService(roomRepository);
+		roomService.post("/room", new Room("100")) ;
+
+		ServiceResponse<Room> response = roomService.put("/room/100/2016-10-12/2016-10-15") ;
+		assertThat(response.status(), is(ServiceResponse.OK));
+		assertThat(response.body().uri(), is("/room/100")) ;
+		assertThat(response.body().content().getBlockedStartDate(), is("2016-10-12")) ;
+		assertThat(response.body().content().getBlockedEndDate(), is("2016-10-15")) ;
+		
+		// TODO check for links to actions
 	}
 	
 	@Test
 	public void getAllRooms() {
 		RoomService roomService = new RoomService(roomRepository);
-		ServiceResponse<Room> response = roomService.post("/room", new Room("100")) ;
-		response = roomService.post("/room", new Room("200")) ;
+		roomService.post("/room", new Room("100")) ;
+		roomService.post("/room", new Room("200")) ;
 		
 		RoomCollectionService roomCollectionService = new RoomCollectionService(roomRepository) ;
 		ServiceResponse<Collection<Room>> responseAllRooms = roomCollectionService.get("/rooms") ;
 		assertThat(responseAllRooms.status(), is(ServiceResponse.OK));
 		assertThat(responseAllRooms.body().content(), hasSize(2)) ;
+		
+		// TODO check for links to actions
 	}
 }
