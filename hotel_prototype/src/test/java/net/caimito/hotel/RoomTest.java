@@ -22,8 +22,6 @@ public class RoomTest {
 		ServiceResponse<Room> response = roomService.post("/room", new Room("100")) ;
 		assertThat(response.status(), is(ServiceResponse.OK));
 		assertThat(response.body().uri(), is("/room/100")) ;
-		
-		// TODO check for links to actions
 	}
 
 	@Test
