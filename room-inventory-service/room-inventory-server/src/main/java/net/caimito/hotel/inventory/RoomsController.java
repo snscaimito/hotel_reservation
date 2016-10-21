@@ -16,31 +16,29 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import net.caimito.hotel.HotelServiceUrls;
-import net.caimito.hotel.Room;
-
 @Controller
-public class RoomInventoryController {
+@RequestMapping("/rooms")
+public class RoomsController {
 	@Autowired
 	private RoomRepository roomRepository ;
 	
-	@RequestMapping(path = HotelServiceUrls.ROOM_INVENTORY_FIND_AVAILABLE_ROOMS, method=RequestMethod.GET)
-	public @ResponseBody ResponseEntity<Rooms> findAvailableRooms(
-			@RequestParam(value="requestStartDate", required=false, defaultValue="1900-01-01") String requestStartDate,
-			@RequestParam(value="requestEndDate", required=false, defaultValue="1900-01-01") String requestEndDate
+	@RequestMapping(path = "/findAvailable", method=RequestMethod.GET)
+	public @ResponseBody ResponseEntity<RoomsResource> findAvailableRooms(
+			@RequestParam(value="fromDate", required=false, defaultValue="1900-01-01") String fromDate,
+			@RequestParam(value="toDate", required=false, defaultValue="1900-01-01") String toDate
 			) {
 
-		final LocalDate startDate = LocalDate.parse(requestStartDate) ;
-		final LocalDate endDate = LocalDate.parse(requestEndDate) ;
+		final LocalDate startDate = LocalDate.parse(fromDate) ;
+		final LocalDate endDate = LocalDate.parse(toDate) ;
 		
-		Rooms rooms = new Rooms(new ArrayList<>()) ;
+		RoomsResource rooms = new RoomsResource(new ArrayList<>()) ;
 		rooms.setStartDateRequested(startDate) ;
 		rooms.setEndDateRequested(endDate) ;
 		
 		List<Room> roomsFound = roomRepository.findAvailableRooms(startDate, endDate) ;
 		rooms.getRooms().addAll(roomsFound) ;
-		
-		rooms.add(linkTo(methodOn(RoomInventoryController.class).findAvailableRooms(requestStartDate, requestEndDate)).withSelfRel());
-		return new ResponseEntity<Rooms>(rooms, HttpStatus.OK) ;
+
+		rooms.add(linkTo(methodOn(RoomsController.class).findAvailableRooms(fromDate, toDate)).withSelfRel());
+		return new ResponseEntity<RoomsResource>(rooms, HttpStatus.OK) ;
 	}
 }

@@ -1,23 +1,25 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<artifactId>room-inventory-service</artifactId>
-	<name>Room inventory service</name>
-	<description>Maintain room inventory</description>
-
 	<parent>
-		<groupId>net.caimito.hotel</groupId>
-		<artifactId>hotel-parent</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>1.4.1.RELEASE</version>
 	</parent>
 
-	<dependencies>
-		<dependency>
-			<groupId>net.caimito.hotel</groupId>
-			<artifactId>hotel-commons</artifactId>
-			<version>${project.version}</version>
-		</dependency>
+	<groupId>net.caimito.hotel</groupId>
+	<artifactId>room-inventory-service</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>pom</packaging>
+	<name>Room inventory service</name>
+	<description>Manage an inventory of rooms</description>
 
+	<modules>
+		<module>room-inventory-server</module>
+		<module>room-inventory-client</module>
+	</modules>
+
+	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
@@ -47,7 +49,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.hamcrest</groupId>
-			<artifactId>hamcrest-all</artifactId>
+			<artifactId>hamcrest-library</artifactId>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -72,15 +74,6 @@
 	<properties>
 		<java.version>1.8</java.version>
 	</properties>
-
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-			</plugin>
-		</plugins>
-	</build>
 
 	<repositories>
 		<repository>

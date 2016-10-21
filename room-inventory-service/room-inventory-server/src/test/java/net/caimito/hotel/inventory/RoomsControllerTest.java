@@ -5,7 +5,7 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -22,30 +22,28 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import net.caimito.hotel.Room;
-
-public class RoomInventoryServiceTest {
+public class RoomsControllerTest {
 
 	private MockMvc mockMvc ;
 	
 	@Mock private RoomRepository roomRepository ;
 	
 	@InjectMocks
-	private RoomInventoryController roomInventoryController ;
+	private RoomsController roomsController ;
 	
 	@Before
 	public void setup() {
 		MockitoAnnotations.initMocks(this);
 		
-		mockMvc = MockMvcBuilders.standaloneSetup(roomInventoryController).build();
+		mockMvc = MockMvcBuilders.standaloneSetup(roomsController).build();
 	}
 	
 	@Test
 	public void noAvailableRooms() throws Exception {
-		mockMvc.perform(get("/rooms/findAvailableRooms?requestStartDate=2016-10-12&requestEndDate=2016-10-15"))
+		mockMvc.perform(get("/rooms/findAvailable?fromDate=2016-10-12&toDate=2016-10-15"))
 			.andExpect(status().isOk())
 			.andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-			.andExpect(jsonPath("$.rooms", is(emptyCollectionOf(Room.class))));
+			.andExpect(jsonPath("$.rooms", is(emptyCollectionOf(RoomResource.class))));
 	}
 
 	@Test
@@ -54,10 +52,10 @@ public class RoomInventoryServiceTest {
 		rooms.add(new Room("Room 100")) ;
 		when(roomRepository.findAvailableRooms(any(), any())).thenReturn(rooms) ;
 		
-		mockMvc.perform(get("/rooms/findAvailableRooms?requestStartDate=2016-10-12&requestEndDate=2016-10-15"))
+		mockMvc.perform(get("/rooms/findAvailable?fromDate=2016-10-12&toDate=2016-10-15"))
 			.andExpect(status().isOk())
 			.andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
 			.andExpect(jsonPath("$.rooms", hasSize(1)));
 	}
-
+	
 }

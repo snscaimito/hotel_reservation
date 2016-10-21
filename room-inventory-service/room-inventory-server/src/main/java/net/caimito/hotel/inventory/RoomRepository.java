@@ -9,10 +9,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
-
-import net.caimito.hotel.Room;
 
 @Repository
 public class RoomRepository {
@@ -20,8 +17,9 @@ public class RoomRepository {
 	@Autowired
 	private JdbcTemplate jdbcTemplate ;
 	
-	public void add(Room room) {
-		jdbcTemplate.execute(String.format("INSERT INTO rooms (designator) VALUES('%s')", room.getRoomDesignator())); 
+	public Room add(String designator) {
+		jdbcTemplate.execute(String.format("INSERT INTO rooms (designator) VALUES('%s')", designator));
+		return new Room(designator) ;
 	}
 
 	public void block(String roomDesignator, LocalDate fromDate, LocalDate toDate) {
