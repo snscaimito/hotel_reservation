@@ -3,6 +3,7 @@ package net.caimito.hotel.inventory;
 import java.time.LocalDate;
 import java.util.List;
 
+import org.apache.commons.lang.builder.ToStringBuilder;
 import org.springframework.hateoas.ResourceSupport;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -13,8 +14,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class RoomsResource extends ResourceSupport {
 
 	private List<Room> rooms ;
-	private @JsonProperty LocalDate startDateRequested ;
-	private @JsonProperty LocalDate endDateRequested ;
+	private @JsonProperty String startDateRequested ;
+	private @JsonProperty String endDateRequested ;
 	
 	public RoomsResource() {
 	}
@@ -32,20 +33,25 @@ public class RoomsResource extends ResourceSupport {
 		this.rooms = rooms;
 	}
 
-	public LocalDate getStartDateRequested() {
+	public String getStartDateRequested() {
 		return startDateRequested;
 	}
 
-	public void setStartDateRequested(LocalDate startDateRequested) {
+	public void setStartDateRequested(String startDateRequested) {
 		this.startDateRequested = startDateRequested;
 	}
 
-	public LocalDate getEndDateRequested() {
+	public String getEndDateRequested() {
 		return endDateRequested;
 	}
 
-	public void setEndDateRequested(LocalDate endDateRequested) {
+	public void setEndDateRequested(String endDateRequested) {
 		this.endDateRequested = endDateRequested;
+	}
+	
+	@Override
+	public String toString() {
+		return ToStringBuilder.reflectionToString(this) ;
 	}
 	
 }

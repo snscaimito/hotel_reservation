@@ -19,6 +19,11 @@ databaseChangeLog:
                   constraints:
                     nullable: false
               - column:
+                  name: room_type
+                  type: varchar(255)
+                  constraints:
+                    nullable: true
+              - column:
                   name: blockedFromDate
                   type: date
                   constraints:
