@@ -11,16 +11,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import net.caimito.hotel.inventory.Room;
-import net.caimito.hotel.inventory.RoomInventoryFacade;
+import net.caimito.hotel.inventory.RoomInventoryClient;
 
 @Component
 public class RoomTypeFinder {
 	private static Logger logger = LoggerFactory.getLogger(RoomTypeFinder.class) ;
 
-	private RoomInventoryFacade roomInventory ;
+	private RoomInventoryClient roomInventory ;
 	
 	@Autowired
-	public RoomTypeFinder(RoomInventoryFacade roomInventoryFacade) {
+	public RoomTypeFinder(RoomInventoryClient roomInventoryFacade) {
 		this.roomInventory = roomInventoryFacade ;
 	}
 	

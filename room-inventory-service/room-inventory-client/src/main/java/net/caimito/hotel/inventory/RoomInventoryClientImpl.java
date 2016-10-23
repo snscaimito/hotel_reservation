@@ -12,8 +12,8 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 @Component
-public class RoomInventoryFacadeImpl implements RoomInventoryFacade {
-	private static Logger logger = LoggerFactory.getLogger(RoomInventoryFacadeImpl.class);
+public class RoomInventoryClientImpl implements RoomInventoryClient {
+	private static Logger logger = LoggerFactory.getLogger(RoomInventoryClientImpl.class);
 
 	@Autowired
 	private RestTemplateBuilder restTemplateBuilder;

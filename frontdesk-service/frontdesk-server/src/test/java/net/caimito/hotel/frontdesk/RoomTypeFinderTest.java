@@ -1,23 +1,23 @@
 package net.caimito.hotel.frontdesk;
 
-import org.junit.Test;
-
-import net.caimito.hotel.inventory.Room;
-import net.caimito.hotel.inventory.RoomInventoryFacade;
-
-import static org.junit.Assert.* ;
+import static org.hamcrest.Matchers.emptyCollectionOf;
+import static org.hamcrest.Matchers.hasSize;
+import static org.junit.Assert.assertThat;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.hamcrest.Matchers.* ;
+import org.junit.Test;
+
+import net.caimito.hotel.inventory.Room;
+import net.caimito.hotel.inventory.RoomInventoryClient;
 
 public class RoomTypeFinderTest {
 
 	@Test
 	public void noRoomTypesAvailable() {
-		RoomInventoryFacade inventory = new RoomInventoryFacade() {
+		RoomInventoryClient inventory = new RoomInventoryClient() {
 			@Override
 			public List<Room> findAvailable(LocalDate fromDate, LocalDate toDate) {
 				return new ArrayList<>();
@@ -31,7 +31,7 @@ public class RoomTypeFinderTest {
 
 	@Test
 	public void emptyHotelEverythingAvailable() {
-		RoomInventoryFacade inventory = new RoomInventoryFacade() {
+		RoomInventoryClient inventory = new RoomInventoryClient() {
 			@Override
 			public List<Room> findAvailable(LocalDate fromDate, LocalDate toDate) {
 				List<Room> rooms = new ArrayList<>();
