@@ -14,19 +14,17 @@
 	<input type="button" id="reserve" value="Reserve" onclick="doReservation()"/>
 	</p>
 	
-	<p>startDate is: <span id="startDate"></span></p>
-	<p>endDate is: <span id="endDate"></span></p>
+	<p>Available room types is: <span id="roomTypes"></span></p>
 </div>
 
 <script>
 function doReservation() {
-	$.getJSON( "/service/reservation",
+	$.getJSON( "/frontdesk/find_available_rooms",
 		{
-			requestStartDate: $("#requestStartDate").val(),
-			requestEndDate: $("#requestEndDate").val()
+			fromDate: $("#requestStartDate").val(),
+			toDate: $("#requestEndDate").val()
 		}, function( data ) {
-		$("#startDate").text(data["startDate"]["year"] + ' ' + data["startDate"]["month"] + ' ' + data["startDate"]["dayOfMonth"]) ;
-		$("#endDate").text(data["endDate"]["year"] + ' ' + data["endDate"]["month"] + ' ' + data["endDate"]["dayOfMonth"]) ;
+		$("#roomTypes").text(data["roomTypes"]) ;
 	});
 }
 </script>
